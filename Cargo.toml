@@ -8,3 +8,6 @@ edition = "2018"
 
 [dependencies]
 ndarray = "0.13.1"
+ndarray-image = "0.2.1"
+image = "0.23.6"
+fastblur = { git = "https://github.com/fschutt/fastblur" }

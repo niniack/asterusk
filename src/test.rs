@@ -1,4 +1,7 @@
+#[allow(unused_imports)]
 use ndarray::prelude::*;
+use ndarray_image::open_gray_image;
+use std::path::Path;
 
 #[test]
 fn basic_neuron() {
@@ -13,4 +16,14 @@ fn basic_neuron() {
     let bias: f64 = 2.0;
     let output = mac(inputs, weights, bias);
     assert_eq!(output, 2.3);
+}
+
+#[test]
+fn load_gray_image() {
+    let path = Path::new("examples/gray.jpeg");
+    let image = match open_gray_image(&path) {
+        Ok(image) => image,
+        Err(error) => panic!("Problem opening the image file: {:?}", error),
+    };
+    assert_eq!(image.ndim(),2);
 }
