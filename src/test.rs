@@ -8,7 +8,7 @@ mod tests{
 
     use rustfft::num_complex::Complex;
     use crate::fftnd::fft2d;
-
+    use crate::utils;
 
     #[test]
     fn test_basic_neuron() {
@@ -39,11 +39,12 @@ mod tests{
     #[test]
     fn test_fft() {
         let mut input: Array2<f32> = array![[1.,2.,3.], [4.,5.,6.], [7.,8.,9.]];
+        let mut input_complex = utils::f32_to_complex(&mut input);
         let mut output: Array2<Complex<f32>> = Array::zeros((3,3));
         let expected: Array2<Complex<f32>> = array![[Complex::new( 45.0,  0.        ), Complex::new(-4.5, 2.59807621), Complex::new(-4.5, -2.59807621)],
-                                                      [Complex::new(-13.5,  7.79422863), Complex::new( 0.0, 0.        ), Complex::new( 0.0,  0.        )],
-                                                      [Complex::new(-13.5, -7.79422863), Complex::new( 0.0, 0.        ), Complex::new( 0.0,  0.        )]];
-        fft2d(&mut input, &mut output);
+                                                    [Complex::new(-13.5,  7.79422863), Complex::new( 0.0, 0.        ), Complex::new( 0.0,  0.        )],
+                                                    [Complex::new(-13.5, -7.79422863), Complex::new( 0.0, 0.        ), Complex::new( 0.0,  0.        )]];
+        fft2d(&mut input_complex, &mut output);
         assert_eq!(output, expected);
     }
 }

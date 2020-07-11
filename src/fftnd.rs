@@ -16,12 +16,9 @@ pub fn fft<T: FFTnum> (input: &mut [Complex<T>], output: &mut [Complex<T>], inve
 // Credits:
 // https://github.com/totem3/ofuton/blob/master/src/lib.rs
 
-pub fn fft2d(input: &mut Array2<f32>, output: &mut Array2<Complex<f32>>) {
+pub fn fft2d(input: &mut Array2<Complex<f32>>, output: &mut Array2<Complex<f32>>) {
 
     let shape = input.dim();
-
-    // Convert input array to complex number array
-    let mut input_complex: Array2<Complex<f32>> = utils::f32_to_complex(input);
 
     // Instantiate fft_rows_complex array to store 1D Row FFT
     let mut fft_rows_complex: Array2<Complex<f32>> = Array::zeros((shape.0, shape.1));
@@ -29,7 +26,7 @@ pub fn fft2d(input: &mut Array2<f32>, output: &mut Array2<Complex<f32>>) {
     // Send input rows for 1D FFT
     let mut output_row_iters = fft_rows_complex.genrows_mut().into_iter();
 
-    for mut input_row_iter in input_complex.genrows_mut() {
+    for mut input_row_iter in input.genrows_mut() {
         let mut output_row_iter = output_row_iters.next().unwrap();
         fft(input_row_iter.as_slice_mut().unwrap(), output_row_iter.as_slice_mut().unwrap(), false);
     }
