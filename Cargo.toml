@@ -7,7 +7,9 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+image = "0.23.6"
 ndarray = "0.13.1"
 ndarray-image = "0.2.1"
-image = "0.23.6"
+rustfft = "3.0.1"
 fastblur = { git = "https://github.com/fschutt/fastblur" }
+transpose = "0.1"

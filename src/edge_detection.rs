@@ -2,6 +2,7 @@ use ndarray::prelude::*;
 use fastblur::gaussian_blur_asymmetric_single_channel;
 use std::iter::FromIterator;
 
+// WIP
 pub fn canny(input: Array2<u8>, low_threshold: f32, high_threshold: f32) {
 
     // Credits:
@@ -17,8 +18,4 @@ pub fn canny(input: Array2<u8>, low_threshold: f32, high_threshold: f32) {
     // utils::write_gray_image("blur.ppm", &data, shape.1 as usize, shape.0 as usize).unwrap();
 
     // Find intensity gradients
-
-
-
-
 }

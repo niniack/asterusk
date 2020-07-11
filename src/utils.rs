@@ -1,15 +1,5 @@
 use ndarray::prelude::*;
-
-pub fn flatten(input: Array2<u8>) -> Array1<u8> {
-    let shape = input.dim();
-    let mut output: Array1<u8> = Array::zeros((shape.0*shape.1).f());
-    for y in 0..shape.0 {
-        for x in 0..shape.1 {
-            output[(shape.1 * y) + x] = input[[y,x]];
-        }
-    }
-    return output;
-}
+use rustfft::num_complex::Complex;
 
 // Adapted from:
 // https://github.com/fschutt/fastblur/blob/master/src/utils.rs
@@ -28,4 +18,15 @@ pub fn write_gray_image<S>(filename: S, data: &Vec<u8>, width: usize, height: us
     }
 
     Ok(())
+}
+
+pub fn f32_to_complex(input: &Array2<f32>) -> Array2<Complex<f32>> {
+    let shape = input.dim();
+    let mut output: Array2<Complex<f32>> = Array::zeros((shape.0, shape.1));
+    for y in 0..shape.0 {
+        for x in 0..shape.1 {
+            output[[y,x]] = Complex::from(input[[y,x]]);
+        }
+    }
+    return output;
 }
