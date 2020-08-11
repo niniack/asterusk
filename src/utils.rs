@@ -92,3 +92,45 @@ pub fn ndarray2_to_gray_image(array: &Array2<f32>) -> GrayImage {
     let img: GrayImage = GrayImage::from_raw(h as u32, w as u32, raw).expect("Couldn't convert");
     img
 }
+
+pub fn open_image_and_convert_to_ndarray3(path: &str) -> Result<Array3<f32>, ImageError> {
+    let img = image::open(&path)?;
+
+    let (w, h) = img.dimensions();
+    let (w, h) = (w as usize, h as usize);
+    println!("img dimensions: ({},{})", w, h);
+
+    let mut array = Array3::<f32>::zeros((3, w, h));
+    for y in 0..h {
+        for x in 0..w {
+            array[[0, x, y]] = img.get_pixel(x as u32, y as u32)[0] as f32;
+            array[[1, x, y]] = img.get_pixel(x as u32, y as u32)[1] as f32;
+            array[[2, x, y]] = img.get_pixel(x as u32, y as u32)[2] as f32;
+        }
+    }
+
+    Ok(array)
+}
+
+pub fn ndarray3_to_rgb_image(array: Array3<f32>) -> Result<RgbImage, ImageError> {
+    let dims = array.dim();
+    let (w, h) = (dims.1, dims.2);
+
+    let mut img: RgbImage = ImageBuffer::new(w as u32, h as u32);
+    for y in 0..h {
+        for x in 0..w {
+            let (x, y) = (x as usize, y as usize);
+            img.put_pixel(
+                x as u32,
+                y as u32,
+                Rgb([
+                    array[[0, x, y]] as u8,
+                    array[[1, x, y]] as u8,
+                    array[[2, x, y]] as u8,
+                ]),
+            );
+        }
+    }
+
+    Ok(img)
+}
